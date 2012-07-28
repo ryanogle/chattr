@@ -1,0 +1,19 @@
+{
+  "name": "chattr",
+  "description": "chat better",
+  "author": "anonymous",
+  "dependencies": {
+    "express": "<= 2.9.9",
+    "ejs": ">=0.0.0",
+    "mongodb": ">=0.0.0",
+    "mongoose": ">=2.5.10",
+    "connect-mongodb": "x.x.x",
+    "underscore": "1.x.x",
+    "socket.io": "0.9.x",
+    "bundle-up": ">=0.3.x",
+    "express-messages": "0.0.2",
+    "redis": ">0.0.0"
+  },
+  "private": true,
+  "version": "0.0.1"
+}
