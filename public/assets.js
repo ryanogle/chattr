@@ -10,5 +10,6 @@ module.exports = function(assets) {
 	/*----------------
 	* css files
 	-----------------*/
-	assets.addCss('/stylesheets/app.css', 'common');
+	// common
+	assets.addCss('/css/app.css', 'common');
 }

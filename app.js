@@ -25,6 +25,14 @@ app.get('/', function(req, res){
   res.render('home');
 });
 
+app.get('/signin', function(req, res){
+  res.render('signin');
+});
+
+app.post('/signin', function(req, res){
+  res.send(req.body.name);
+});
+
 
 app.listen(app.settings.port, function(){
   console.log("Express server listening on port %d.", app.settings.port);
