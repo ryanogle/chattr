@@ -34,16 +34,16 @@ app.set('port', 3000);
 
 //Require Controllers
 var position = require('./controllers/position.js');
-var signing = require('./controllers/signin.js');
+var signin = require('./controllers/signin.js');
 
 // RENDER ROUTES
 app.get('/', function(req, res){
   res.send('home');
 });
-app.get('/home', authBounce, function(req, res){
+app.get('/home', function(req, res){
   res.render('home');
 });
-app.get('/mock', authBounce, function(req, res){
+app.get('/mock', function(req, res){
   res.render('home');
 });
 app.get('/signin', function(req, res){
@@ -52,8 +52,8 @@ app.get('/signin', function(req, res){
 
 
 //DATA ROUTES
-app.post('/position', authBounce, position.myposition);
-app.post('/signin', authBounce, signing.signin);
+app.post('/position', position.myposition);
+app.post('/signin', signin.signin);
 
 function authBounce(req, res, next) {
   if (!req.session.user) {
