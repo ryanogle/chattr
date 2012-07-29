@@ -77,7 +77,7 @@ io.set('authorization', function(data, next) {
         sessionStore.get(sid, function(e, sess) {
         	//console.log(sess);
             if (sess._id) {
-                data.user = sess._id;
+                data._id = sess._id;
                 data.session = sess;
                 next(null, true);
             } else {
@@ -93,7 +93,7 @@ var client1 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compu
 var client2 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");
 var client3 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");
 
-//chat(app, io, client1, client2, client3);
+chat(app, io, client1, client2, client3);
 
 app.listen(app.settings.port, function(){
   console.log("Express server listening on port %d.", app.settings.port);
