@@ -39,6 +39,7 @@ module.exports = function(app, io, client1, client2, client3) {
 		socket.on('location', function(data){
 			console.log('outer location');
 			registerLocation(myid, data, client3)
+			socket.emit("locationInfo", "TODO - calculate right #");
 		})
       socket.on('disconnect', function(socket){
         console.log('The user ' + myid + 'has logged OFF')

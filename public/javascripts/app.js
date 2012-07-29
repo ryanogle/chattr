@@ -20,10 +20,12 @@ function sendLocation(data) {
 socket.on('locationInfo', function(data) {
 	console.log(["Good news, the server got our location update and responded: ", data]);
 	// TODO spit out locationInfo to html
+	document.getElementById("peopleAroundMe").innerHTML = data;
 });
 
 // update when a chat comes in
 socket.on('chatMessage', function(data) {
+	data = JSON.parse(data);
 	console.log("Income message recieved: "+data);
 	updateChatFeed(data);
 });
@@ -40,15 +42,16 @@ socket.on('chatMessage', function(data) {
 function updateChatFeed(data) {
 	var newChatHtml = '<li data-theme="c">\
 					<span class="name">'+data.name+'</span>\
-					<p>'+data.message+'</p>\
+					<span class="message">'+data.message+'</span>\
 				</li>';
 	var chatFeed = $("#chat-feed");
 	chatFeed.append(newChatHtml);
-	if (chatFeed.children().length > 3) {
-		console.log ("removing message older than 20 messages history");
-		chatFeed.remove($(this+"li:first"));
+	if (chatFeed.children().length > 20) {
+		console.log ("removing old messages");
+		chatFeed.children(":first").remove();
 	}
-	
+	chatFeed.listview("refresh");
+	$(document).scrollTop($(document).height());
 }
 
 /* ---------------------

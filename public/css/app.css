@@ -4,21 +4,7 @@
 	margin-left:10px;
 	margin-bottom:10px;
 }
-/* clearfix*/
-.clearfix:before, .clearfix:after {
-	content:" "; /* 1 */
-	display:table; /* 2 */
-}
-.clearfix:after {
-	clear:both;
-}
-/**
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-.clearfix {
-	*zoom:1;
-}
+
 /* header */
 #header-custom h3 {
 	display:inline-block;
@@ -38,9 +24,17 @@
 	background:rgba(222, 222, 222, 0.15);
 	border-top:1px solid gray;
 }
+
+#chat-feed {
+	margin-bottom: 36px;
+}
 #chat-feed .name {
 	padding:0px 0 10px;
 	display:block;
+}
+#chat-feed .message {
+	font-weight: normal;
+	margin: 0px;
 }
 .ui-bar.chat-box {
 	bottom:44px;
