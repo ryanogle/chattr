@@ -1,0 +1,1 @@
+var chat = io.connect('http://localhost/chat')
