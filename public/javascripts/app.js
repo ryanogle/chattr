@@ -14,11 +14,20 @@ function sendLocation(data) {
 
 // update html when recieving confirmation from server with location info (# of people, # of convos)
 socket.on('locationInfo', function(data) {
-	console.log(["Good news, the server got our location update and responded: ",data]);
+	console.log(["Good news, the server got our location update and responded: ", data]);
 });
 
-$('#chat-test').click(function(){
-	socket.emit('text_message', "Hey you, this message is a fake!");
+
+/*--------------------------------------
+ * jquery ready dependent functions here
+ --------------------------------------*/
+$(document).bind('pageinit', function() {
+	
+	$('#chat-test').click(function() {
+		console.log("this should emit a text_message over websockets...");
+		socket.emit('text_message', "Hey you, this message is a fake!");
+	});
+// end document.bind("pageinit")
 });
 
 /* ---------------------
@@ -42,9 +51,12 @@ geolocation.getLocation = function() {
 
 		that.lat = position.coords.latitude;
 		that.long = position.coords.longitude;
-		
+
 		// send location over websocket
-		sendLocation({lat:this.lat, lon:this.long});
+		sendLocation({
+			lat : this.lat,
+			lon : this.long
+		});
 	}
 
 	function fail(error) {
@@ -63,6 +75,7 @@ geolocation.getLocation = function() {
 				displayTxt = 'Unknown position';
 		}
 		alert("Sorry, cant get location.  Reason: " + displayTxt);
+		console.log("Sorry, cant get location.  Reason: " + displayTxt);
 	}
 
 };
@@ -80,7 +93,7 @@ geolocation.trackLocation = function() {
 	});
 	function success(position) {
 		// distance threshold (calculated in feet)
-		var threshold = 20;
+		var threshold = 40;
 		var moveDistance = that.calcDistance(that.lat, that.long, position.coords.latitude, position.coords.longitude);
 
 		// ignore changes under threshold, or way big (like due to acurracy change rather than actual move)
@@ -95,7 +108,10 @@ geolocation.trackLocation = function() {
 		that.long = position.coords.longitude;
 
 		// send location over websocket
-		sendLocation({lat:this.lat, lon:this.long});
+		sendLocation({
+			lat : this.lat,
+			lon : this.long
+		});
 	}
 
 	function fail(error) {
