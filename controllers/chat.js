@@ -2,6 +2,7 @@ var _ = require('underscore');
 var redis = require("redis");
 var redisHost = '54.248.113.192';
 var redisPort = '6379';
+var position = require('./position.js');
 
 
 module.exports = function(app, io, client1, client2, client3) {
@@ -29,7 +30,6 @@ module.exports = function(app, io, client1, client2, client3) {
     	myconnection.on("message", function (channel, message){
           var typecheck = JSON.parse(message);
       if(channel === myid){
-      	message = 'Echoing back: ' + message;
         socket.emit('chat', message);
         console.log('EMITTING MESSAGE:::' + message + 'ON CHANNEL:::' + channel);
       }
