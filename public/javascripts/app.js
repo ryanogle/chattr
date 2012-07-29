@@ -17,17 +17,27 @@ socket.on('locationInfo', function(data) {
 	console.log(["Good news, the server got our location update and responded: ", data]);
 });
 
-
 /*--------------------------------------
  * jquery ready dependent functions here
  --------------------------------------*/
 $(document).bind('pageinit', function() {
-	
-	$('#chat-test').click(function() {
-		console.log("this should emit a text_message over websockets...");
-		socket.emit('text_message', "Hey you, this message is a fake!");
+
+	$('#send-chat').click(function() {
+		console.log("this should send our message over websockets...");
+		var chatInput = $("#chat-input");
+		var chatMessage = chatInput.val();
+		// clear input
+		chatInput.val("");
+
+		console.log("Sending chat message: " + chatMessage);
+		socket.emit('text_message', chatMessage);
 	});
-// end document.bind("pageinit")
+	// enter sends chat
+	$("#chat-input").keypress(function(e) {
+		if (e.which == 13) {
+			$("#send-chat").trigger("click");
+		}
+	});
 });
 
 /* ---------------------
@@ -54,8 +64,8 @@ geolocation.getLocation = function() {
 
 		// send location over websocket
 		sendLocation({
-			lat : this.lat,
-			lon : this.long
+			lat : that.lat,
+			long : that.long
 		});
 	}
 
