@@ -6,6 +6,7 @@
 			<p id="user" class="pull-right">
 				Your handle: <span id="my-handle"><%- displayName %></span>
 			</p>
+			<p id="tagline">Tap into the conversations around you.</p>
 			<p id="live-status">
 				<b id="peopleAroundMe">23</b> people having conversations within 50 ft
 			</p>
@@ -28,8 +29,10 @@
 		</ul>
 	</div>
 	<div data-role="footer" class="ui-bar chat-box" data-position="fixed">
-		<input id="chat-input" type="text" data-mini="true" />
-		<a href="javascript:void(0);" data-role="button" data-mini="true" data-theme="b" id="send-chat">Send Chat</a>
+		<a href="javascript:void(0);" data-role="button" data-mini="true" data-theme="b" id="send-chat">Send</a>
+		<div id="chat-input-wrapper">
+			<input id="chat-input" type="text" data-mini="true" />
+		</div>
 	</div>
 
 	<div data-theme="a" data-role="footer" class="ui-bar" data-position="fixed">

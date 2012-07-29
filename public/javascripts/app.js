@@ -16,6 +16,16 @@ function sendLocation(data) {
 	socket.emit('location', data);
 }
 
+// send location on connect
+socket.on('connection', function() {
+	console.log("Sending location updates for connection event.");
+	sendLocation({
+			lat : geolocation.lat,
+			long : geolocation.long
+		});
+});
+
+
 // update html when recieving confirmation from server with location info (# of people, # of convos)
 socket.on('locationInfo', function(data) {
 	console.log(["Good news, the server got our location update and responded: ", data]);
@@ -152,7 +162,7 @@ geolocation.trackLocation = function() {
 			default:
 				displayTxt = 'Unknown position';
 		}
-		alert("Sorry, we were unable to track your location.  You can probably ignore this.  Reason: " + displayTxt);
+		alert("Sorry, we were unable to track your location so chat data might be out of date.  We'll try again in a moment.  Reason: " + displayTxt);
 	}
 
 };

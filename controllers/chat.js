@@ -16,8 +16,17 @@ module.exports = function(app, io, client1, client2, client3) {
   	console.log('The user ' + myid + 'has logged ON')
 
     socket.handshake.myconnection = myconnection;
-   	myconnection.subscribe(myid, function(a, b){
+   	/*myconnection.subscribe(myid, function(a, b){
    		console.log("SUBSCRIBING TO MY CONNECTION:::" + socket.handshake._id);
+    });*/
+   	// TODO - remove when live - the next two functions are for testing local chat between two brosers with fixed ids:
+   	//id1: 353da530-203a-4fd2-9d58-732a2f4a4147
+	//id2: e27537cd-c54d-4815-a40a-f3c49a3bf65d
+   	myconnection.subscribe("353da530-203a-4fd2-9d58-732a2f4a4147", function(a, b){
+   		console.log("SUBSCRIBING TO MY CONNECTION:::" + "353da530-203a-4fd2-9d58-732a2f4a4147");
+    });
+   	myconnection.subscribe("e27537cd-c54d-4815-a40a-f3c49a3bf65d", function(a, b){
+   		console.log("SUBSCRIBING TO MY CONNECTION:::" + "e27537cd-c54d-4815-a40a-f3c49a3bf65d");
     });
 
     socket.on('chatMessage', function(data){
@@ -29,7 +38,8 @@ module.exports = function(app, io, client1, client2, client3) {
         });
     	myconnection.on("message", function (channel, message){
           var typecheck = JSON.parse(message);
-      if(channel === myid){
+          // TODO take out the true clause, used for testing two browser chat
+      if(true || channel === myid){
         socket.emit('chatMessage', message);
         console.log('EMITTING MESSAGE:::' + message + 'ON CHANNEL:::' + channel);
       }
@@ -39,7 +49,7 @@ module.exports = function(app, io, client1, client2, client3) {
 		socket.on('location', function(data){
 			console.log('outer location');
 			registerLocation(myid, data, client3)
-			socket.emit("locationInfo", "TODO - calculate right #");
+			socket.emit("locationInfo", "##");
 		})
       socket.on('disconnect', function(socket){
         console.log('The user ' + myid + 'has logged OFF')
