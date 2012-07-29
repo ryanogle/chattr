@@ -38,7 +38,7 @@ var chat = require('./controllers/chat2.js');
 
 // RENDER ROUTES
 app.get('/', authBounce, function(req, res){
-  res.send('home');
+  res.redirect('/home');
 });
 app.get('/home', authBounce, function(req, res){
   res.render('home', {displayName: req.session.displayName});
