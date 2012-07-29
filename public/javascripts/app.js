@@ -14,9 +14,12 @@ function sendLocation(data) {
 
 // update html when recieving confirmation from server with location info (# of people, # of convos)
 socket.on('locationInfo', function(data) {
-	console.log(data);
+	console.log(["Good news, the server got our location update and responded: ",data]);
 });
 
+$('#chat-test').click(function(){
+	socket.emit('text_message', "Hey you, this message is a fake!");
+});
 
 /* ---------------------
  * GEOLOCATION FUNCTIONS
