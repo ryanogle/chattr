@@ -17,7 +17,7 @@ module.exports = function(app, io, client1, client2, client3) {
    		console.log("SUBSCRIBING TO MY CONNECTION:::" + socket.handshake._id);
     });
 
-    socket.on('text_message', function(data){
+    socket.on('chatMessage', function(data){
       //var chatChannel = data.chatChannel;
       //var msg = data.message;
       data = JSON.stringify(data);
@@ -28,7 +28,7 @@ module.exports = function(app, io, client1, client2, client3) {
           var typecheck = JSON.parse(message);
       if(channel === myid){
       	message = 'Echoing back: ' + message;
-        socket.emit('chat', message);
+        socket.emit('chatMessage', message);
         console.log('EMITTING MESSAGE:::' + message + 'ON CHANNEL:::' + channel);
       }
       else{
