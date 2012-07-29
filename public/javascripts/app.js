@@ -197,7 +197,7 @@ $(document).bind('pageinit', function() {
 		chatInput.val("");
 
 		console.log("Sending chat message: " + chatMessage);
-		socket.emit('chatMessage', chatMessage);
+		socket.emit('chatMessage', {name:myHandle, message:chatMessage});
 	});
 	// enter sends chat
 	$("#chat-input").keypress(function(e) {
