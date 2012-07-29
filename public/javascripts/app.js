@@ -51,7 +51,7 @@ socket.on('chatMessage', function(data) {
  */
 function updateChatFeed(data) {
 	var newChatHtml = '<li data-theme="c">\
-					<span class="name">'+data.name+'</span>\
+					<span class="name">'+data.name+'</span><span class="conversation-name">'+data.conversationName+'</span>\
 					<span class="message">'+data.message+'</span>\
 				</li>';
 	var chatFeed = $("#chat-feed");
@@ -210,7 +210,12 @@ $(document).bind('pageinit', function() {
 		chatInput.val("");
 
 		console.log("Sending chat message: " + chatMessage);
-		socket.emit('chatMessage', {name:myHandle, message:chatMessage});
+		// conversationName exists if in a conversation room
+		var conversationName =  null;
+		if ($("#conversation-name").length > 0) {
+			conversationName = $("#conversation-name")[0].dataset.conversationName;
+		}
+		socket.emit('chatMessage', {name:myHandle, message:chatMessage, type:"chatMessage", conversationName:conversationName});
 	});
 	// enter sends chat
 	$("#chat-input").keypress(function(e) {

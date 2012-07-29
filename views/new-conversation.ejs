@@ -1,0 +1,21 @@
+<!-- signin -->
+<div data-role="page" data-theme="a" >
+	<div data-theme="b" data-role="header"  data-position="fixed">
+		<div id="header-custom">
+			<h3 >Chattr</h3>
+			<p id="tagline">Tap into the conversations around you.</p>
+			<p id="live-status">
+				<b id="peopleAroundMe">23</b> people having conversations within 50 ft
+			</p>
+		</div>
+	</div>
+    <div data-role="content" style="padding: 15px; font-size: 14px;">
+    	<h3>Start new conversation</h3>
+    	<p>Enter your new conversation topic below.  Anyone in your proximity will see chats from this conversation and can join this conversation.</p>
+    	<br><br>
+    	<form method="post" action="/new-conversation">
+    		<input type="text" name="conversationName" data-mini="true" />
+    		<input type="submit" name="submit" value="Start conversation" />
+    	</form>
+    </div>
+</div>

@@ -47,6 +47,15 @@ app.get('/mock', authBounce, function(req, res){
 app.get('/signin', function(req, res){
   res.render('signin');
 });
+app.get('/new-conversation', function(req, res){
+  res.render('new-conversation');
+});
+app.post('/new-conversation', function(req, res){
+  res.redirect('conversation-room/:'+req.body.conversationName);
+});
+app.get('/conversation-room/:conversationName', function(req, res){
+  res.render('conversation-room', {displayName: req.session.displayName, conversationName: req.params.conversationName});
+});
 
 
 //DATA ROUTES
