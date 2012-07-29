@@ -139,5 +139,3 @@ geolocation.calcDistance = function(lat1, lon1, lat2, lon2) {
 geolocation.getLocation();
 geolocation.trackLocation();
 
-
->>>>>>> 28eae34b274a85d52df33e7342a2c9942dd44a71
