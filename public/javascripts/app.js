@@ -1,8 +1,12 @@
+// vars
+
+var myHandle = "not retrived yet...";
+var socket = io.connect('http://localhost/chat');
+var geolocation = {};
+
 /*---------------------------
  * WEB SOCKETS
  ---------------------------*/
-
-var socket = io.connect('http://localhost/chat');
 
 /**
  * Send your location
@@ -15,36 +19,42 @@ function sendLocation(data) {
 // update html when recieving confirmation from server with location info (# of people, # of convos)
 socket.on('locationInfo', function(data) {
 	console.log(["Good news, the server got our location update and responded: ", data]);
+	// TODO spit out locationInfo to html
 });
 
-/*--------------------------------------
- * jquery ready dependent functions here
- --------------------------------------*/
-$(document).bind('pageinit', function() {
-
-	$('#send-chat').click(function() {
-		console.log("this should send our message over websockets...");
-		var chatInput = $("#chat-input");
-		var chatMessage = chatInput.val();
-		// clear input
-		chatInput.val("");
-
-		console.log("Sending chat message: " + chatMessage);
-		socket.emit('text_message', chatMessage);
-	});
-	// enter sends chat
-	$("#chat-input").keypress(function(e) {
-		if (e.which == 13) {
-			$("#send-chat").trigger("click");
-		}
-	});
+// update when a chat comes in
+socket.on('chatMessage', function(data) {
+	console.log("Income message recieved: "+data);
+	updateChatFeed(data);
 });
+
+/*------------------------
+ * HTML UPDATING FUNCTIONS
+----------------------- */
+
+/**
+ * updates the list of messages
+ * only keeps last 20 messages
+ * @param data send from websocket
+ */
+function updateChatFeed(data) {
+	var newChatHtml = '<li data-theme="c">\
+					<span class="name">'+data.name+'</span>\
+					<p>'+data.message+'</p>\
+				</li>';
+	var chatFeed = $("#chat-feed");
+	chatFeed.append(newChatHtml);
+	if (chatFeed.children().length > 3) {
+		console.log ("removing message older than 20 messages history");
+		chatFeed.remove($(this+"li:first"));
+	}
+	
+}
 
 /* ---------------------
  * GEOLOCATION FUNCTIONS
  ---------------------*/
 
-var geolocation = {};
 geolocation.lat = "not set...";
 geolocation.long = "not set...";
 /**
@@ -162,6 +172,38 @@ geolocation.calcDistance = function(lat1, lon1, lat2, lon2) {
 	return dist;
 }
 
+
+/*------------------
+ * EXECUTE CODE
+ ------------------*/
+
 geolocation.getLocation();
 geolocation.trackLocation();
 
+
+
+// jquery ready dependent functions here
+$(document).bind('pageinit', function() {
+
+	// grab handle from html (embedded by server)
+	myHandle = $("#my-handle").text();
+	
+	// wire click/keyboard events
+	$('#send-chat').click(function() {
+		console.log("this should send our message over websockets...");
+		var chatInput = $("#chat-input");
+		var chatMessage = chatInput.val();
+		// clear input
+		chatInput.val("");
+
+		console.log("Sending chat message: " + chatMessage);
+		socket.emit('chatMessage', {name:myHandle, message:chatMessage});
+	});
+	// enter sends chat
+	$("#chat-input").keypress(function(e) {
+		if (e.which == 13) {
+			$("#send-chat").trigger("click");
+		}
+	});
+	
+});
