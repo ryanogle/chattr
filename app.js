@@ -74,9 +74,7 @@ io.set('authorization', function(data, next) {
     if (data.headers && data.headers.cookie) {
         var cookies = parseCookie(data.headers.cookie);
         var sid = cookies['connect.sid'];
-        console.log('sid is: ' + sid);
         sessionStore.get(sid, function(e, sess) {
-        	console.log(e);
         	//console.log(sess);
             if (sess._id) {
                 data.user = sess._id;
