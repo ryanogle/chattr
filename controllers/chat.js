@@ -1,5 +1,7 @@
 var _ = require('underscore');
 var redis = require("redis");
+var redisHost = '54.248.113.192';
+var redisPort = '6379';
 
 
 module.exports = function(app, io, client1, client2, client3) {
@@ -9,7 +11,7 @@ module.exports = function(app, io, client1, client2, client3) {
   chat = io.of('/chat')
   .on('connection', function(socket){
   	var myid = socket.handshake._id;
-    var myconnection = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");  //Comment out this line and change all other references to 'client1' to redis.createClient() to change to shared connection
+    var myconnection = redis.createClient(redisPort, redisHost);  //Comment out this line and change all other references to 'client1' to redis.createClient() to change to shared connection
   	console.log('The user ' + myid + 'has logged ON')
 
     socket.handshake.myconnection = myconnection;
