@@ -1,58 +1,66 @@
 /* UTILITIES */
 .pull-right {
-	float:right;
-	margin-left:10px;
-	margin-bottom:10px;
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
 }
-/* clearfix*/
-.clearfix:before, .clearfix:after {
-	content:" "; /* 1 */
-	display:table; /* 2 */
-}
-.clearfix:after {
-	clear:both;
-}
-/**
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-.clearfix {
-	*zoom:1;
-}
+
 /* header */
 #header-custom h3 {
-	display:inline-block;
-	width:50%;
-	margin:10px;
+	display: inline-block;
+	width: 105px;
+	margin: 10px;
+	font-size: 35px;
+	color: khaki;
 }
 #header-custom #user {
-	display:inline-block;
-	text-align:right;
-	width:45%;
-	margin:10px;
+	display: inline-block;
+	text-align: right;
+	width: 60%;
+	margin: 10px;
+	font-size: 14px;
+	font-weight: normal;
+}
+#tagline {
+	margin: -7px 0 3px 0;
+	padding: 0px 10px;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 15px;
 }
 #live-status {
-	margin:0;
-	padding:1px 10px;
-	font-weight:normal;
-	background:rgba(222, 222, 222, 0.15);
-	border-top:1px solid gray;
+	margin: 0;
+	padding: 1px 10px;
+	font-weight: normal;
+	font-size: 13px;
+	background: rgba(0, 0, 0, 0.7);
+	border-top: 1px solid #AAA;
+}
+
+#chat-feed {
+	margin-bottom: 36px;
 }
 #chat-feed .name {
-	padding:0px 0 10px;
-	display:block;
+	padding: 0px 0 10px;
+	display: block;
+}
+#chat-feed .message {
+	font-weight: normal;
+	margin: 0px;
 }
 .ui-bar.chat-box {
-	bottom:44px;
+	bottom: 44px;
 }
+.ui-bar.chat-box #chat-input-wrapper {
+	overflow: auto;
+}
+
 .ui-bar.chat-box #chat-input {
-	float:left;
-	display:inline-block;
-	width:90%;
-	margin-right:13px;
 }
 
 .ui-bar.chat-box #send-chat {
-	float:left;
-	display:inline-block;
+	float: right;
+	margin-right: 20px;
+	margin-left: 10px;
+	margin-top: 3px;
 }

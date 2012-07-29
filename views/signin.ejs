@@ -1,8 +1,19 @@
-<!-- Home -->
-<div data-role="page">
-    <div data-role="content" style="padding: 15px">
-    	<h3>Choose a handle</h3>
-    	<p>This can be anything you want</p>
+<!-- signin -->
+<div data-role="page" data-theme="a" >
+	<div data-theme="b" data-role="header"  data-position="fixed">
+		<div id="header-custom">
+			<h3 >Chattr</h3>
+			<p id="tagline">Tap into the conversations around you.</p>
+			<p id="live-status">
+				<b id="peopleAroundMe">23</b> people having conversations within 50 ft
+			</p>
+		</div>
+	</div>
+    <div data-role="content" style="padding: 15px; font-size: 14px;">
+    	<h3>Welcome to Chattr</h3>
+    	<p>Instantly see the conversations happening right around you and jump in to any nearby conversation at any time.</p>
+    	<p>To get started chatting, just choose the handle you want to display with your chats. This can be anything you want.</p>
+    	<br><br>
     	<form method="post" action="/signin">
     		<input type="text" name="name" data-mini="true" />
     		<input type="hidden" name="lat" value="latvalue" />

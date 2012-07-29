@@ -34,7 +34,7 @@ app.set('port', 3000);
 //Require Controllers
 var position = require('./controllers/position.js');
 var signin = require('./controllers/signin.js');
-var chat = require('./controllers/chat.js');
+var chat = require('./controllers/chat2.js');
 
 // RENDER ROUTES
 app.get('/', authBounce, function(req, res){
@@ -48,6 +48,15 @@ app.get('/mock', authBounce, function(req, res){
 });
 app.get('/signin', function(req, res){
   res.render('signin');
+});
+app.get('/new-conversation', function(req, res){
+  res.render('new-conversation');
+});
+app.post('/new-conversation', function(req, res){
+  res.redirect('conversation-room/:'+req.body.conversationName);
+});
+app.get('/conversation-room/:conversationName', function(req, res){
+  res.render('conversation-room', {displayName: req.session.displayName, conversationName: req.params.conversationName});
 });
 
 

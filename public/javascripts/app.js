@@ -16,14 +16,26 @@ function sendLocation(data) {
 	socket.emit('location', data);
 }
 
+// send location on connect
+socket.on('connection', function() {
+	console.log("Sending location updates for connection event.");
+	sendLocation({
+			lat : geolocation.lat,
+			long : geolocation.long
+		});
+});
+
+
 // update html when recieving confirmation from server with location info (# of people, # of convos)
 socket.on('locationInfo', function(data) {
 	console.log(["Good news, the server got our location update and responded: ", data]);
 	// TODO spit out locationInfo to html
+	document.getElementById("peopleAroundMe").innerHTML = data;
 });
 
 // update when a chat comes in
 socket.on('chatMessage', function(data) {
+	data = JSON.parse(data);
 	console.log("Income message recieved: "+data);
 	updateChatFeed(data);
 });
@@ -39,16 +51,17 @@ socket.on('chatMessage', function(data) {
  */
 function updateChatFeed(data) {
 	var newChatHtml = '<li data-theme="c">\
-					<span class="name">'+data.name+'</span>\
-					<p>'+data.message+'</p>\
+					<span class="name">'+data.name+'</span><span class="conversation-name">'+data.conversationName+'</span>\
+					<span class="message">'+data.message+'</span>\
 				</li>';
 	var chatFeed = $("#chat-feed");
 	chatFeed.append(newChatHtml);
-	if (chatFeed.children().length > 3) {
-		console.log ("removing message older than 20 messages history");
-		chatFeed.remove($(this+"li:first"));
+	if (chatFeed.children().length > 20) {
+		console.log ("removing old messages");
+		chatFeed.children(":first").remove();
 	}
-	
+	chatFeed.listview("refresh");
+	$(document).scrollTop($(document).height());
 }
 
 /* ---------------------
@@ -149,7 +162,7 @@ geolocation.trackLocation = function() {
 			default:
 				displayTxt = 'Unknown position';
 		}
-		alert("Sorry, we were unable to track your location.  You can probably ignore this.  Reason: " + displayTxt);
+		alert("Sorry, we were unable to track your location so chat data might be out of date.  We'll try again in a moment.  Reason: " + displayTxt);
 	}
 
 };
@@ -197,7 +210,12 @@ $(document).bind('pageinit', function() {
 		chatInput.val("");
 
 		console.log("Sending chat message: " + chatMessage);
-		socket.emit('chatMessage', {name:myHandle, message:chatMessage});
+		// conversationName exists if in a conversation room
+		var conversationName =  null;
+		if ($("#conversation-name").length > 0) {
+			conversationName = $("#conversation-name")[0].dataset.conversationName;
+		}
+		socket.emit('chatMessage', {name:myHandle, message:chatMessage, type:"chatMessage", conversationName:conversationName});
 	});
 	// enter sends chat
 	$("#chat-input").keypress(function(e) {

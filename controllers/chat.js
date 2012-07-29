@@ -19,7 +19,8 @@ module.exports = function(app, io, client1, client2, client3) {
   	console.log('The user ' + myid + 'has logged ON')
 
     socket.handshake.myconnection = myconnection;
-   	myconnection.subscribe(myid, function(){
+
+ 		myconnection.subscribe(myid, function(){
    		console.log("SUBSCRIBING TO MY CONNECTION:::" + socket.handshake._id);
     });
 
