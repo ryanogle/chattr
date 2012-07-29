@@ -1,7 +1,7 @@
 
 exports.signin = function(req, res){
-	//req.session._id = createUUID();
-	//req.session.displayName = req.displayName;
+	req.session._id = createUUID();
+	req.session.displayName = req.displayName;
 	res.send(req.body.name);
 }
 
