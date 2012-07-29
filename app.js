@@ -15,6 +15,8 @@ BundleUp(app, __dirname + '/public/assets.js', {
   bundle: false
 });
 
+
+
 app.use(express.static(__dirname + '/public/'))
 app.use(express.bodyParser());
 app.use(express.cookieParser());
@@ -57,6 +59,7 @@ function authBounce(req, res, next) {
   if (!req.session._id) {
     res.redirect("/signin");
   } else {
+  	global.session = req.session;
     next();
   }
 }
@@ -93,7 +96,7 @@ io.set('authorization', function(data, next) {
 
 var client1 = redis.createClient(redisPort, redisHost);
 var client2 = redis.createClient(redisPort, redisHost);
-var client3 = redis.createClient(redisPort, redisHost);
+global.client3 = redis.createClient(redisPort, redisHost);
 
 chat(app, io, client1, client2, client3);
 

@@ -11,12 +11,15 @@ module.exports = function(app, io, client1, client2, client3) {
 
   chat = io.of('/chat')
   .on('connection', function(socket){
+  	var ListeningPointsOrig;
+  	var ListeningPointsNew;
+  	var MyRegPoint;
   	var myid = socket.handshake._id;
     var myconnection = redis.createClient(redisPort, redisHost);  //Comment out this line and change all other references to 'client1' to redis.createClient() to change to shared connection
   	console.log('The user ' + myid + 'has logged ON')
 
     socket.handshake.myconnection = myconnection;
-   	myconnection.subscribe(myid, function(a, b){
+   	myconnection.subscribe(myid, function(){
    		console.log("SUBSCRIBING TO MY CONNECTION:::" + socket.handshake._id);
     });
 
@@ -29,29 +32,51 @@ module.exports = function(app, io, client1, client2, client3) {
         });
     	myconnection.on("message", function (channel, message){
           var typecheck = JSON.parse(message);
-      if(channel === myid){
+      if(typecheck.type === 'chatMessage'){
         socket.emit('chatMessage', message);
         console.log('EMITTING MESSAGE:::' + message + 'ON CHANNEL:::' + channel);
-      }
-      else{
+      } else if (typecheck.type === 'newMember') {
+      	myconnection.subscribe(typecheck.id, function(){
+      		console.log('Got New Member: ' + typecheck.id);
+      	});
+      } else if (typecheck.type === 'oldMember'){
+      	myconnection.unsubscribe(typecheck.id, function(){
+      		console.log('Removed Member: ' + typecheck.id);
+      	});
+      } else {
+      	console.log('Received a message, but do not know the type, and did NOTHING with it');
       }
 		});
 		socket.on('location', function(data){
-			console.log('outer location');
-			registerLocation(myid, data, client3)
+			console.log('Registering Point');
+			position.registerPoint(data, function(regPoint){
+				var regdata = {"id": myid, "type": "newMember"}
+				regdata = JSON.stringify(regdata);
+				client2.publish(regPoint, regdata);
+				console.log(regPoint);
+			});
+			position.getField(function(points){
+				ListeningPointsNew = points;
+				console.log('unsubscribing now');
+				/*
+				for(i=0; i<points.ListeningPointsOrig; i++){
+					myconnection.unsubscribe(ListeningPointsOrig[i]);
+					console.log('unsubscribing from old points');
+				}
+				*/			
+				for(i=0; i<points.length; i++){
+					myconnection.subscribe(ListeningPointsNew[i], function(){
+					console.log('subscribing to new points');
+					});
+				}
+				ListeningPointsOrig = ListeningPointsOrig;
 		})
       socket.on('disconnect', function(socket){
         console.log('The user ' + myid + 'has logged OFF')
         myconnection.quit();
       });
   });
+});
 
-};
-
-function registerLocation(myid, data, client3){
-	console.log('Im registering myself now');
-	console.log(myid);
-	console.log(data);
-	data = JSON.stringify(data);
-	client3.set(myid, data, redis.print);
 }
+
