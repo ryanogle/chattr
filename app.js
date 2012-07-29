@@ -1,11 +1,13 @@
 express = require('express');
+var redisHost = '54.248.113.192';
+var redisPort = '6379';
 var app = express.createServer();
 var BundleUp = require('bundle-up');
 var parseCookie = require('express/node_modules/connect').utils.parseCookie;
 var redis = require("redis");
 var sio = require('socket.io');
 var RedisStore = require('connect-redis')(express);
-var sessionStore = new RedisStore({host: 'ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com', port: '6379'});
+var sessionStore = new RedisStore({host: redisHost, port: redisPort});
 
 BundleUp(app, __dirname + '/public/assets.js', {
   staticRoot: __dirname + '/public/',
@@ -37,7 +39,7 @@ app.get('/', authBounce, function(req, res){
   res.send('home');
 });
 app.get('/home', authBounce, function(req, res){
-  res.render('home');
+  res.render('home', {displayName: req.session.displayName});
 });
 app.get('/mock', authBounce, function(req, res){
   res.render('home');
@@ -89,9 +91,9 @@ io.set('authorization', function(data, next) {
     }
 });
 
-var client1 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");
-var client2 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");
-var client3 = redis.createClient("6379", "ec2-54-248-25-104.ap-northeast-1.compute.amazonaws.com");
+var client1 = redis.createClient(redisPort, redisHost);
+var client2 = redis.createClient(redisPort, redisHost);
+var client3 = redis.createClient(redisPort, redisHost);
 
 chat(app, io, client1, client2, client3);
 

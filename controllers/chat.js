@@ -35,6 +35,7 @@ module.exports = function(app, io, client1, client2, client3) {
       }
 		});
 		socket.on('location', function(data){
+			console.log('outer location');
 			registerLocation(myid, data, client3)
 		})
       socket.on('disconnect', function(socket){
@@ -47,5 +48,8 @@ module.exports = function(app, io, client1, client2, client3) {
 
 function registerLocation(myid, data, client3){
 	console.log('Im registering myself now');
+	console.log(myid);
+	console.log(data);
+	data = JSON.stringify(data);
 	client3.set(myid, data, redis.print);
 }
