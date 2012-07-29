@@ -63,6 +63,7 @@ geolocation.getLocation = function() {
 				displayTxt = 'Unknown position';
 		}
 		alert("Sorry, cant get location.  Reason: " + displayTxt);
+		console.log("Sorry, cant get location.  Reason: " + displayTxt);
 	}
 
 };
