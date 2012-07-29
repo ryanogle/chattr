@@ -1,8 +1,8 @@
 
 exports.signin = function(req, res){
 	req.session._id = createUUID();
-	req.session.displayName = req.displayName;
-	res.send(req.body.name);
+	req.session.displayName = req.body.name;
+	res.render('home', {"displayName": req.body.name});
 }
 
 
