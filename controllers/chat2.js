@@ -1,6 +1,9 @@
 var _ = require('underscore');
 var redis = require("redis");
-var redisHost = '54.248.113.192';
+var Config = require('../lib/configure.js');
+conf = new Config;
+
+var redisHost = conf.redisHost;
 var redisPort = '6379';
 var position = require('./position.js');
 
@@ -56,15 +59,17 @@ module.exports = function(app, io, client1, client2, client3) {
 				client2.publish(regPoint, regdata);
 				console.log(regPoint);
 			});
-			position.getField(function(points){
-				ListeningPointsNew = points;
-				console.log('unsubscribing now');
-				/*
-				for(i=0; i<points.ListeningPointsOrig; i++){
-					myconnection.unsubscribe(ListeningPointsOrig[i]);
-					console.log('unsubscribing from old points');
+			position.getField(myconnection, function(points){
+				ListeningPointsNew = points;;
+
+				if (ListeningPointsOrig){
+					for(i=0; i<points.ListeningPointsOrig; i++){
+						myconnection.unsubscribe(ListeningPointsOrig[i]);
+						console.log('unsubscribing from the point: ' + ListeningPointsOrig[i]);
+					}
 				}
-				*/			
+
+							
 				for(i=0; i<points.length; i++){
 					myconnection.subscribe(ListeningPointsNew[i], function(){
 					console.log('subscribing to new points');

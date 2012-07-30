@@ -1,5 +1,8 @@
 express = require('express');
-var redisHost = '54.248.113.192';
+
+var Config = require('./lib/configure.js');
+var conf = new Config;
+var redisHost = conf.redisHost;
 var redisPort = '6379';
 var app = express.createServer();
 var BundleUp = require('bundle-up');

@@ -21,7 +21,7 @@ exports.registerPoint = function(data, cb){
 	cb(regPoint);
 }
 
-exports.getField = function(cb){
+exports.getField = function(myconnection, cb){
 	var fullset = [];
 	var points = []
 	console.log('Getting Field for: ' + session._id);
@@ -42,28 +42,41 @@ exports.getField = function(cb){
 	console.log(point4);
 
 	client3.smembers(point1, function(err, results){
-		fullset.concat(results);
 		console.log('results1: ' + results);
+		for (var key in results) {
+  		myconnection.subscribe(results[key], function(){
+				console.log('subscribing to:' + results[key]);
+			});
+  	}
 	});
 	client3.smembers(point2, function(err, results){
-		fullset.concat(results);
 		console.log('results2: ' + results);
-	for (var key in results) {
-   console.log('key: ' + results[key]);
-  }
+		for (var key in results) {
+  		myconnection.subscribe(results[key], function(){
+				console.log('subscribing to:' + results[key]);
+			});
+  	}
 	});
 	client3.smembers(point3, function(err, results){
-		fullset.concat(results);
 		console.log('results3: ' + results);
+		for (var key in results) {
+  		myconnection.subscribe(results[key], function(){
+				console.log('subscribing to:' + results[key]);
+			});
+  	}
 	});
 	client3.smembers(point4, function(err, results){
-		//fullset.concat(results);
 		console.log('results4: ' + results);
-
-		
-		
+		for (var key in results) {
+  		myconnection.subscribe(results[key], function(){
+				console.log('subscribing to:' + results[key]);
+			});
+  	}
 	});
 	console.log(fullset);
 	cb(points);
+	myconnection.unsubscribe('somechannel', function(){
+	console.log('bleh');
+	});
 	//var fullset = set1.concat(set2, set3, set4);
 }
