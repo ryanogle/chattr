@@ -1,6 +1,9 @@
 var mylat;
 var mylong;
 var fieldInterval;
+var fieldAccuracy = 2;
+var fieldMultiplier = Math.pow(10, fieldAccuracy);
+console.log('field multi: ' + fieldMultiplier)
 
 exports.myposition = function(req, res){
 	
@@ -11,8 +14,8 @@ exports.registerPoint = function(data, cb){
 	mylong = data.long;
 	console.log('my latitude is: ' + mylat);
 	console.log('my longitude is: ' + mylong);
-	var newLat = Math.round(parseFloat(parseFloat(data.lat).toFixed(5)*10000));
-	var newLong = Math.round(parseFloat(parseFloat(data.long).toFixed(5)*10000));
+	var newLat = Math.round(parseFloat(parseFloat(data.lat).toFixed(3)*100));
+	var newLong = Math.round(parseFloat(parseFloat(data.long).toFixed(3)*100));
 	console.log('my new lat is: ' + newLat)
 	console.log('my new long is: ' + newLong)
 	var regPoint = newLat + '-' + newLong;
@@ -27,13 +30,13 @@ exports.getField = function(myconnection, cb){
 	console.log('Getting Field for: ' + session._id);
 	console.log('my latitude is: ' + mylat);
 	console.log('my longitude is: ' + mylong);
-	var point1 = Math.ceil(mylat*10000) + '-' + Math.ceil(mylong*10000);
+	var point1 = Math.ceil(mylat*fieldMultiplier) + '-' + Math.ceil(mylong*fieldMultiplier);
 	points.push(point1);
-	var point2 = Math.ceil(mylat*10000) + '-' + Math.floor(mylong*10000);
+	var point2 = Math.ceil(mylat*fieldMultiplier) + '-' + Math.floor(mylong*fieldMultiplier);
 	points.push(point2);
-	var point3 = Math.floor(mylat*10000) + '-' + Math.ceil(mylong*10000);
+	var point3 = Math.floor(mylat*fieldMultiplier) + '-' + Math.ceil(mylong*fieldMultiplier);
 	points.push(point3);
-	var point4 = Math.floor(mylat*10000) + '-' + Math.floor(mylong*10000);
+	var point4 = Math.floor(mylat*fieldMultiplier) + '-' + Math.floor(mylong*fieldMultiplier);
 	points.push(point4);
 	
 	console.log(point1);
