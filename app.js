@@ -88,6 +88,7 @@ var io = sio.listen(app);
 io.set('authorization', function(data, next) {
     //pull express cookie, load
     //and validate user/session
+
     if (data.headers && data.headers.cookie) {
         var cookies = parseCookie(data.headers.cookie);
         var sid = cookies['connect.sid'];
