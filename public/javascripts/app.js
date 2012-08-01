@@ -1,7 +1,8 @@
 // vars
 
 var myHandle = "not retrived yet...";
-var socket = io.connect('http://localhost/chat');
+var socketurl = document.location.href;
+var socket = io.connect(socketurl + '/chat');
 var geolocation = {};
 
 /*---------------------------
