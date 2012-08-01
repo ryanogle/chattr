@@ -1,3 +1,11 @@
+var corejs;
+if (process.env.NODE_ENV === 'production'){
+	corejs = '/javascripts/core_prod.js';
+} else if (process.env.NODE_ENV === 'development'){
+	corejs = '/javascripts/core_dev.js';
+}
+
+
 module.exports = function(assets) {
 	assets.root = __dirname;
 
@@ -5,7 +13,7 @@ module.exports = function(assets) {
 	* javascript files
 	-----------------*/
 	// common
-	assets.addJs('/javascripts/app.js', 'common');
+	assets.addJs(corejs, 'common');
 
 	/*----------------
 	* css files
